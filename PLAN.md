@@ -116,14 +116,16 @@ Portafolio web híbrido bajo un mismo dominio con dos mini-sitios:
 - [x] **Script de subida** de las 158 fotos locales → categorías (`npm run upload:photos`): idempotente por `sourceKey`, pool de 4, orden global 0–157. **Verificado: 158 photo + 4 category (62/50/28/18), 0 fallidas, 555 s** (+1 doc hero = 159 fotos)
 - [x] Base de datos del front: `lib/sanity.client.ts`, `lib/sanity.image.ts` (`urlFor`), `lib/queries.ts` (`PHOTOS_QUERY`, `CATEGORIES_QUERY` con LQIP + dimensiones), `lib/gallery.ts` (`getGalleryData` con `"use cache"`)
 - [x] Galería **masonry** (`columns-2 md:columns-3 lg:columns-4` + `break-inside-avoid`) con filtros de texto: Todo | Retratos Estudio | Retratos Exterior | Eventos | Comida (cliente, sin re-fetch)
-- [x] Hover de imagen: `grayscale → grayscale-0` + `scale-[1.03]` (500 ms) + caption con gradiente
+- [x] Hover de imagen: solo `scale-[1.03]` (500 ms) — **sin B/N**, fotos a todo color (intención *color splash* decidida por Orlando)
+- [x] Caption en hover: **nombre de categoría** (no el nombre de archivo, decisión de Orlando)
+- [x] **Lightbox:** clic en foto → imagen grande con `createPortal` a `body`; el shell de la página (`#foto-shell`) se desenfoca (`blur(10px)`) y pasa a escala de grises (`grayscale(1)`) vía JS; navegación ←/→, cierre con Esc o clic en el fondo, contador `n / total`, scroll bloqueado, `role="dialog"`
 - [x] 3 Paquetes de servicios (tarjetas 100% CSS, sin imágenes) ⚠️ **contenido de ejemplo a revisar por Orlando** (nombres/precios/beneficios en `components/foto/packages.tsx`)
 - [x] Contacto `mailto:` estilo revista (inputs solo con borde inferior) → `orlando.dua2@gmail.com`; punto de inyección Formspree comentado en `handleSubmit`; redes: solo Instagram (`orlandodua.fotografo`, sin Behance por decisión)
 - [x] Entradas animadas con Framer Motion (`Reveal` + `useReducedMotion`, `whileInView` once)
 
 **Verificación Fase 2:**
 - `npx tsc --noEmit` ✅ · `npm run lint` ✅ · `npm run build` ✅ (`/foto` estático, revalidate 15m)
-- HTML de producción:200, **159 `<img>`** (158 galería + 1 hero), las 3 secciones (`#galeria`, `#paquetes`, `#contacto`) con `scroll-mt-20` bajo el header sticky, preload del hero (`priority`), `next/image` optimizer → 200 (hero:116 KB)
+- HTML de producción:200, **159 `<img>`** (158 galería + 1 hero), **0 clases `grayscale`** en la galería (color pleno), **158 botones "Ampliar foto"**, las 3 secciones (`#galeria`, `#paquetes`, `#contacto`) con `scroll-mt-20` bajo el header sticky, preload del hero (`priority`), `next/image` optimizer → 200 (hero:116 KB)
 - Studio local (`npm run sanity:dev`, :3333) muestra las158 fotos +4 categorías. En manage.sanity.io **no hay visor de contenido** (solo conteos); CORS `localhost:3333` ya registrado
 - Gotchas encontrados: `sanity dev` exige `styled-components` como dependencia directa del proyecto; `LayoutProps<"/foto">` requiere build previo para generar tipos de ruta; `new Date()` en render rompe el prerender (resuelto con `"use cache"` en `getYear()`); iconos de marca eliminados de lucide v1 → Instagram SVG propio (`instagram-icon.tsx`)
 

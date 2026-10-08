@@ -22,7 +22,10 @@ export default async function FotoLayout({
   const year = await getYear();
 
   return (
-    <div className="flex min-h-dvh flex-col bg-stone-50 text-stone-900">
+    <div
+      id="foto-shell"
+      className="flex min-h-dvh flex-col bg-stone-50 text-stone-900"
+    >
       <header className="sticky top-0 z-50 border-b border-stone-200 bg-stone-50/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
           <Link
