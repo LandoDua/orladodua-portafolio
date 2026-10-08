@@ -32,6 +32,8 @@ Portafolio web híbrido bajo un mismo dominio con dos mini-sitios:
 8. **MCPs configurados:** **Context7** y **Google Stitch** en la config global (`~/.config/opencode/opencode.json`, fuera del repo); **Sanity** en el `opencode.json` **del proyecto** (nivel proyecto, header `Authorization: Bearer …` + `oauth: false`). El `opencode.json` del proyecto va al `.gitignore` para no exponer la API key.
 9. **Stitch = referencia vaga de maquetación.** El proyecto de Stitch ("Dual Portfolio Developer Photographer", 6 pantallas) fue una primera maquetación con **contenido de relleno** y **animaciones excesivas**. Solo sirve como guía de distribución de secciones; el contenido real se define en este repo y el diseño debe ser **más limpio y sobrio** (animaciones contenidas).
 10. **Identidad visible: "Orlando Duarte".** En la landing aparece como nombre negativo centrado sobre la costura (`mix-blend-mode: difference`, texto blanco → sale blanco sobre el lado oscuro y negro sobre el lado claro; al crecer un panel las letras se invierten al pasar la unión). Tipografía Geist en mayúsculas espaciadas. En desktop el contenido de cada panel se separa en diagonal (dev ↑, foto ↓) para dejarle el centro al nombre; en móvil el nombre queda sobre la unión apilada. Metadata actualizada con el nombre completo. El handle `orladodua` queda para dominio/GitHub.
+11. **Token de escritura Sanity = token del MCP.** El PAT que usa el MCP remoto (`opencode.json`, gitignored) se copia a `SANITY_API_WRITE_TOKEN` en `.env.local` (también gitignored). No se genera token adicional salvo que falle el permiso de escritura.
+12. **Git desde Fase 2:** repo inicializado en Fase 2 con `fotografias/` (393 MB de originales) en `.gitignore`; solo se versiona código y configuración.
 
 ## 3. Reglas inquebrantables
 
@@ -46,11 +48,14 @@ Portafolio web híbrido bajo un mismo dominio con dos mini-sitios:
 .
 ├── PLAN.md
 ├── context/                    # Documentación de referencia
-├── fotografias/                # Fotos locales (fuente para subir a Sanity)
+├── fotografias/                # Fotos locales (fuente para subir a Sanity) — en .gitignore
 ├── .opencode/skills/           # Skills de agentes del proyecto
+├── sanity.config.ts            # Config del Studio local (npx sanity dev)
+├── sanity.cli.ts               # Config del CLI (deploy de schemas)
 ├── sanity/                     # Schemas + scripts de subida
 │   ├── schemas/{category,photo}.ts
 │   └── scripts/upload-photos.mjs
+├── lib/                        # Cliente Sanity del front (client, image, queries)
 └── app/
     ├── page.tsx                # Landing split screen
     ├── (foto)/foto/            # layout claro + página (FASE PRIORITARIA)
@@ -66,7 +71,7 @@ Portafolio web híbrido bajo un mismo dominio con dos mini-sitios:
 - [x] `next.config.ts`: `remotePatterns` para `cdn.sanity.io`
 - [x] `.env.local` (gitignored) con `NEXT_PUBLIC_SANITY_PROJECT_ID`, dataset y token
   - Proyecto Sanity: **`8670kl0n`** ("Orlando Dev/Photo"), dataset **`production`**.
-  - ⚠️ `SANITY_API_WRITE_TOKEN` **pendiente**: Orlando debe generarlo en manage.sanity.io → API → Tokens (scope Editor) antes de la Fase 2.
+  - ✅ `SANITY_API_WRITE_TOKEN` **resuelto (2026-10-08)**: se reutiliza el PAT del MCP de Sanity (`opencode.json`) copiándolo a `.env.local`. Scope de escritura verificado con la subida real de la Fase 2. Si algún día falla, generar uno nuevo en manage.sanity.io → API → Tokens (scope Editor).
 - [x] `.gitignore` de proyecto: incluye `opencode.json` (token MCP), `.env*`, `node_modules`, `.next`
 - Verificación: `npm run lint` ✅ · `npm run build` ✅
 
@@ -102,15 +107,21 @@ Portafolio web híbrido bajo un mismo dominio con dos mini-sitios:
 - ⚠️ `/foto` y `/dev` devuelven **404** hasta las Fases 2 y 3.
 
 ### Fase 2 — Lado Fotógrafo (`/foto`) ⬅️ PRIORIDAD
+
+> **Estado parcial (2026-10-08): backend (Sanity) COMPLETADO.** Pendiente la UI de `/foto`.
+
 - [ ] `layout.tsx` con identidad clara (stone-50, serif + sans vía `next/font`, líneas finas)
 - [ ] Hero / Quién Soy
-- [ ] **Sanity:** proyecto nuevo, schemas `category` y `photo`, dataset
-- [ ] **Script de subida** de las 158 fotos locales → categorías (respetando carpetas)
+- [x] **Sanity:** schemas `category` y `photo` (`sanity/schemas/` + `sanity.config.ts`), desplegados con `npm run sanity:schema:deploy` (workspace `orlando-site`, verificado vía MCP)
+- [x] **Script de subida** de las 158 fotos locales → categorías (`npm run upload:photos`): idempotente por `sourceKey`, pool de 4, orden global 0–157. **Verificado: 158 photo + 4 category (62/50/28/18), 0 fallidas, 555 s**
+- [x] Base de datos del front: `lib/sanity.client.ts`, `lib/sanity.image.ts` (`urlFor`), `lib/queries.ts` (`PHOTOS_QUERY`, `CATEGORIES_QUERY` con LQIP + dimensiones)
 - [ ] Galería **masonry** con filtros de texto: Todo | Retratos Estudio | Retratos Exterior | Eventos | Comida
 - [ ] Hover de imagen: zoom + filtro CSS (escala de grises → color)
 - [ ] 3 Paquetes de servicios (tarjetas 100% CSS, sin imágenes)
 - [ ] Contacto `mailto:` estilo revista (inputs solo con borde inferior) + redes (Instagram, Behance)
 - [ ] Entradas animadas (fade-in/slide-up) con Framer Motion
+
+> **Nota:** CORS de Sanity para fetch desde browser (si la galería lo necesita) se agregará con `npx sanity cors add` en la fase de UI.
 
 ### Fase 3 — Lado Developer (`/dev`)
 - [ ] `layout.tsx` oscuro (bg-zinc-950, acentos cyan/rojo, glow)
