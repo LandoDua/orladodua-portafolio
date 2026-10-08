@@ -261,17 +261,20 @@ function Lightbox({
   onNext,
 }: LightboxProps) {
   const { width, height } = photo.image.asset.metadata.dimensions;
-  const lqip = photo.image.asset.metadata.lqip;
-  const [ready, setReady] = useState(false);
+  // `loadedId`: la foto ya cargó solo si coincide con la visible (se resetea
+  // al navegar para que vuelvan a aparecer las burbujas si hace falta).
+  const [loadedId, setLoadedId] = useState<string | null>(null);
+  if (loadedId !== null && loadedId !== photo._id) setLoadedId(null);
+  const loaded = loadedId === photo._id;
 
   // Precarga las vecinas cuando la foto actual ya terminó de cargar.
   useEffect(() => {
-    if (!ready) return;
+    if (!loaded) return;
     for (const src of preloadUrls) {
       const img = new window.Image();
       img.src = src;
     }
-  }, [ready, preloadUrls]);
+  }, [loaded, preloadUrls]);
 
   return (
     <motion.div
@@ -315,18 +318,48 @@ function Lightbox({
       </button>
 
       <figure className="flex max-h-full flex-col items-center">
-        <Image
-          src={urlFor(photo.image).width(LIGHTBOX_WIDTH).url()}
-          alt={photo.alt}
-          width={width}
-          height={height}
-          sizes="92vw"
-          className="max-h-[78svh] w-auto max-w-[92vw] object-contain shadow-2xl md:max-w-[88vw]"
-          placeholder={lqip ? "blur" : "empty"}
-          blurDataURL={lqip ?? undefined}
-          priority
-          onLoad={() => setReady(true)}
-        />
+        <div className="relative">
+          <Image
+            src={urlFor(photo.image).width(LIGHTBOX_WIDTH).url()}
+            alt={photo.alt}
+            width={width}
+            height={height}
+            sizes="92vw"
+            className={`max-h-[78svh] w-auto max-w-[92vw] object-contain shadow-2xl transition-opacity duration-500 md:max-w-[88vw] motion-reduce:transition-none ${
+              loaded ? "opacity-100" : "opacity-0"
+            }`}
+            placeholder="empty"
+            priority
+            onLoad={() => setLoadedId(photo._id)}
+          />
+          {!loaded && (
+            <div
+              role="status"
+              className="absolute inset-0 flex flex-col items-center justify-center gap-3"
+            >
+              <div className="flex items-end gap-2" aria-hidden>
+                {[0, 1, 2].map((i) => (
+                  <motion.span
+                    key={i}
+                    className="h-3 w-3 rounded-full bg-stone-100"
+                    animate={
+                      animate ? { y: [-7, 0, -7], opacity: [0.4, 1, 0.4] } : false
+                    }
+                    transition={{
+                      duration: 1.1,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: i * 0.16,
+                    }}
+                  />
+                ))}
+              </div>
+              <p className="text-xs tracking-wide text-stone-500">
+                Cargando foto…
+              </p>
+            </div>
+          )}
+        </div>
         <figcaption className="mt-4 flex items-center gap-3 text-sm text-stone-50">
           <span>{categoryTitle}</span>
           <span className="text-stone-500/80" aria-hidden>
