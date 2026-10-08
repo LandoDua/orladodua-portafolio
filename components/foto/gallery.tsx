@@ -88,6 +88,21 @@ export function Gallery({ photos, categories }: GalleryProps) {
 
   const activePhoto = selected !== null ? visible[selected] : null;
 
+  // Precarga las vecinas (solo cuando la foto grande ya cargó) para que las
+  // flechas naveguen sin espera.
+  const preloadUrls = useMemo(() => {
+    if (selected === null || visible.length < 2) return [];
+    const urls = new Set<string>();
+    for (const dir of [-1, 1]) {
+      const neighbor =
+        visible[(selected + dir + visible.length) % visible.length];
+      if (neighbor) {
+        urls.add(urlFor(neighbor.image).width(LIGHTBOX_WIDTH).url());
+      }
+    }
+    return [...urls];
+  }, [selected, visible]);
+
   return (
     <section id="galeria" className="scroll-mt-20 border-t border-stone-200">
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
@@ -155,6 +170,7 @@ export function Gallery({ photos, categories }: GalleryProps) {
             }
             index={selected}
             total={visible.length}
+            preloadUrls={preloadUrls}
             animate={!reduceMotion}
             onClose={close}
             onPrev={() => step(-1)}
@@ -226,6 +242,7 @@ interface LightboxProps {
   categoryTitle: string;
   index: number;
   total: number;
+  preloadUrls: string[];
   animate: boolean;
   onClose: () => void;
   onPrev: () => void;
@@ -237,12 +254,24 @@ function Lightbox({
   categoryTitle,
   index,
   total,
+  preloadUrls,
   animate,
   onClose,
   onPrev,
   onNext,
 }: LightboxProps) {
   const { width, height } = photo.image.asset.metadata.dimensions;
+  const lqip = photo.image.asset.metadata.lqip;
+  const [ready, setReady] = useState(false);
+
+  // Precarga las vecinas cuando la foto actual ya terminó de cargar.
+  useEffect(() => {
+    if (!ready) return;
+    for (const src of preloadUrls) {
+      const img = new window.Image();
+      img.src = src;
+    }
+  }, [ready, preloadUrls]);
 
   return (
     <motion.div
@@ -253,7 +282,10 @@ function Lightbox({
       initial={animate ? { opacity: 0 } : false}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.25 }}
-      onClick={onClose}
+      onClick={(e) => {
+        // Solo el clic directo en el fondo cierra (los controles no burbujean).
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <button
         type="button"
@@ -282,10 +314,7 @@ function Lightbox({
         <ChevronRight className="h-5 w-5" aria-hidden />
       </button>
 
-      <figure
-        className="flex max-h-full flex-col items-center"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <figure className="flex max-h-full flex-col items-center">
         <Image
           src={urlFor(photo.image).width(LIGHTBOX_WIDTH).url()}
           alt={photo.alt}
@@ -293,7 +322,10 @@ function Lightbox({
           height={height}
           sizes="92vw"
           className="max-h-[78svh] w-auto max-w-[92vw] object-contain shadow-2xl md:max-w-[88vw]"
+          placeholder={lqip ? "blur" : "empty"}
+          blurDataURL={lqip ?? undefined}
           priority
+          onLoad={() => setReady(true)}
         />
         <figcaption className="mt-4 flex items-center gap-3 text-sm text-stone-50">
           <span>{categoryTitle}</span>
