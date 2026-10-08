@@ -13,6 +13,7 @@ export const PHOTOS_QUERY = defineQuery(`*[_type == "photo"] | order(order asc) 
   title,
   alt,
   order,
+  sourceKey,
   "category": category->slug.current,
   image {
     asset->{
