@@ -9,7 +9,7 @@ import { EMAIL } from "@/lib/site";
 const PACKAGES = [
   {
     name: "Esencial",
-    price: "$1,500",
+    price: "$1,000",
     unit: "MXN · sesión",
     featured: false,
     features: [
@@ -21,7 +21,7 @@ const PACKAGES = [
   },
   {
     name: "Profesional",
-    price: "$3,500",
+    price: "$2,500",
     unit: "MXN · sesión",
     featured: true,
     features: [
@@ -34,7 +34,7 @@ const PACKAGES = [
   },
   {
     name: "Eventos",
-    price: "desde $6,000",
+    price: "desde $3,000",
     unit: "MXN · cobertura",
     featured: false,
     features: [
