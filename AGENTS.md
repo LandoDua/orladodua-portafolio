@@ -90,11 +90,20 @@ Ambos deben pasar sin errores. También verifica responsive en móvil (la landin
 
 **Gotchas del dev server (aprendidos en la Fase 1):**
 
-1. **Nunca ejecutes `npm run build` con `next dev` corriendo** — corrompe `.next` y la hidratación deja de funcionar (HTML bien, pero sin hover/animaciones). Si pasa: `rm -rf .next` y reiniciar `next dev`.
+1. **Nunca ejecutes `npm run build` con `next dev` corriendo** — corrompe `.next` y la hidratación deja de funcionar (HTML bien, pero **páginas en blanco** en el navegador, o sin hover/animaciones). Si pasa: `rm -rf .next` y reiniciar `next dev`.
 2. **Si mueren las animaciones/hover pero el HTML se ve bien**, revisa `allowedDevOrigins` en `next.config.ts`: debe incluir `localhost`, `127.0.0.1`, `[::1]` **y la IP LAN actual**. Si el HMR (websocket) está bloqueado, **la hidratación de React no completa**. La IP la asigna el DHCP y puede cambiar (bug original de Orlando: "solo se ven los dos cuadros").
 3. **La landing debe verse sin JavaScript**: la entrada es CSS (`.panel-in` en `globals.css`), el SSR de Framer Motion **nunca** debe dejar `opacity:0` inline en el texto. No reintroducir `initial="hidden"` de Framer en texto visible.
 
-## 9. Convenciones
+## 9. Flujo de trabajo y despliegue (Vercel)
+
+- **`main` = producción.** Solo se hace push a `main` para lanzar una versión. Vercel despliega automáticamente en `https://orladodua-portafolio.vercel.app` con cada push a `main`.
+- **`develop` = rama de desarrollo.** Todo el trabajo futuro (Fase 3 Dev, Formspree, pulido) se hace aquí. Cada push genera un *deploy de preview* en Vercel.
+- **Para lanzar:** merge de `develop` → `main` + push.
+- **Env vars en Vercel** (ya configuradas): `NEXT_PUBLIC_SANITY_PROJECT_ID=8670kl0n`, `NEXT_PUBLIC_SANITY_DATASET=production` (producción y preview). El `SANITY_API_WRITE_TOKEN` **nunca** se sube a Vercel (solo sirve para subir fotos desde local).
+- **CLI de Vercel:** usar `npx vercel` (no hay instalación global). El proyecto está linkeado vía `.vercel/` (gitignored).
+- **Repo GitHub:** `LandoDua/orladodua-portafolio` (privado).
+
+## 10. Convenciones
 
 - TypeScript estricto; sin `any` innecesarios.
 - Componentes en `kebab-case` (`project-card.tsx`); páginas nativas `page.tsx`/`layout.tsx`.

@@ -34,6 +34,8 @@ Portafolio web híbrido bajo un mismo dominio con dos mini-sitios:
 10. **Identidad visible: "Orlando Duarte".** En la landing aparece como nombre negativo centrado sobre la costura (`mix-blend-mode: difference`, texto blanco → sale blanco sobre el lado oscuro y negro sobre el lado claro; al crecer un panel las letras se invierten al pasar la unión). Tipografía Geist en mayúsculas espaciadas. En desktop el contenido de cada panel se separa en diagonal (dev ↑, foto ↓) para dejarle el centro al nombre; en móvil el nombre queda sobre la unión apilada. Metadata actualizada con el nombre completo. El handle `orladodua` queda para dominio/GitHub.
 11. **Token de escritura Sanity = token del MCP.** El PAT que usa el MCP remoto (`opencode.json`, gitignored) se copia a `SANITY_API_WRITE_TOKEN` en `.env.local` (también gitignored). No se genera token adicional salvo que falle el permiso de escritura.
 12. **Git desde Fase 2:** repo inicializado en Fase 2 con `fotografias/` (393 MB de originales) en `.gitignore`; solo se versiona código y configuración.
+13. **Flujo de ramas y despliegue (2026-10-11):** `main` = producción, `develop` = desarrollo. Repo GitHub privado `LandoDua/orladodua-portafolio`, proyecto Vercel `orladodua-portafolio` (Hobby). Push a `main` → deploy automático a producción. Env vars de Sanity públicas ya configuradas en Vercel.
+14. **Pantalla `/dev` coming soon (2026-10-11):** ruta `(dev)/dev/page.tsx` con estética oscura, glow cyan/rojo, enlaces a GitHub/email y botón de vuelta al inicio. No cuenta como inicio de Fase 3.
 
 ## 3. Reglas inquebrantables
 
@@ -143,7 +145,7 @@ Portafolio web híbrido bajo un mismo dominio con dos mini-sitios:
 - [ ] `prefers-reduced-motion`
 - [ ] Metadatos SEO por ruta + favicon
 - [ ] Verificación: `npm run lint` + `npm run build`
-- [ ] Conexión a Vercel (Hobby) + env vars
+- [x] Conexión a Vercel (Hobby) + env vars — **2026-10-11**: repo GitHub privado, proyecto Vercel linkeado, env vars configuradas, primer deploy de producción exitoso.
 - [ ] Migración futura del contacto a Formspree
 
 ## 6. Skills de agentes instaladas
