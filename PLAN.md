@@ -27,7 +27,7 @@ Portafolio web híbrido bajo un mismo dominio con dos mini-sitios:
    - `Comida y Productos` (18) → `fotografias/comida y productos/`
 4. **Galería:** masonry (columnas CSS) con menú de filtros en texto simple.
 5. **Formulario de contacto:** `mailto:` por ahora; migración a **Formspree** en una fase posterior (dejar el componente preparado para intercambiar el handler).
-6. **Contenido Dev:** Tone Breadth, SK scorev, Flora 26 y Portafolio Fotográfico con datos reales (repo, demo, descripción, tags) que aportará Orlando.
+6. **Contenido Dev:** Tone Breath, Skull King Scorer, Flora 26 y Portafolio Fotográfico con datos reales verificados contra GitHub LandoDua (repo, demo, descripción, stack). Nombres corregidos respecto al PLAN original: "Tone Breadth" → **Tone Breath**, "SK scorev" → **Skull King Scorer**.
 7. **Skills de agentes:** instaladas en `.opencode/skills/` desde [`context/habilidades_de_agentes.md`](./context/habilidades_de_agentes.md) + skill de Vercel (`vercel-react-best-practices`).
 8. **MCPs configurados:** **Context7** y **Google Stitch** en la config global (`~/.config/opencode/opencode.json`, fuera del repo); **Sanity** en el `opencode.json` **del proyecto** (nivel proyecto, header `Authorization: Bearer …` + `oauth: false`). El `opencode.json` del proyecto va al `.gitignore` para no exponer la API key.
 9. **Stitch = referencia vaga de maquetación.** El proyecto de Stitch ("Dual Portfolio Developer Photographer", 6 pantallas) fue una primera maquetación con **contenido de relleno** y **animaciones excesivas**. Solo sirve como guía de distribución de secciones; el contenido real se define en este repo y el diseño debe ser **más limpio y sobrio** (animaciones contenidas).
@@ -157,13 +157,28 @@ Contexto: la primera tirada (159 docs) se subió por script; a futuro se agregar
 | Categoría nueva | Crear en Studio (o añadir carpeta al array `FOLDERS` del script si se quiere subida por lote) |
 
 ### Fase 3 — Lado Developer (`/dev`)
-- [ ] `layout.tsx` oscuro (bg-zinc-950, acentos cyan/rojo, glow)
-- [ ] Hero + botones con efecto neón
-- [ ] `<ProjectCard />` reutilizable: imagen, título, descripción, tags con borde brillante, GitHub / Live Demo
-- [ ] Grid de proyectos con datos reales: Tone Breadth, SK scorev, Flora 26, Portafolio Fotográfico
-- [ ] Actividad GitHub con estética de terminal
-- [ ] Contacto `mailto:` con inputs que brillan en `:focus` + footer de redes
-- [ ] Entradas animadas con Framer Motion
+
+> **Estado: ✅ COMPLETADA (2026-10-21)** — UI completa + GitHub API real.
+
+- [x] `layout.tsx` oscuro con identidad propia (bg-zinc-950, acentos cyan/rojo, glow, `font-mono` Geist Mono), header sticky y footer con ©/GitHub/email
+- [x] Hero con badge Monitor + h1 con text-shadow glow + subtítulo + botones #proyectos (cyan) y #contacto (rojo), entrada con CSS puro (`.panel-in` / `.panel-in-delay`, visible sin JS)
+- [x] **`lib/projects.ts`** — fuente única de datos: tipo `TechId` (14 ids), interfaz `Project`, array `PROJECTS[]` con los 4 proyectos reales (Tone Breath, Skull King Scorer, Flora 26, Portafolio Fotográfico)
+- [x] **`<TechBadge />`** — insignia redonda 100% CSS (círculo h-9 w-9, borde `cyan-400/30`, glow `0_0_8px`, `group-hover` intensifica), logo SVG inline de simple-icons (patrón de `github-icon.tsx`), 5–6 por card, siempre visibles **sobre la miniatura** (esquina inferior izquierda), reemplazan a los tags de texto del cuerpo
+- [x] **`<ProjectCard />`** — imagen `next/image` fill aspect-video object-top, gradiente oscuro en base para legibilidad de badges, enlaces Código / Live Demo con iconos Lucide
+- [x] Grid de proyectos (`md:grid-cols-2`) con datos reales verificados (repo/descripción/stack de GitHub; demos con HTTP 200; covers = capturas Playwright de los propios repos + de /foto producción)
+- [x] **Terminal GitHub** (`<GithubTerminal />`): chrome con dots (rojo/cyan/zinc), `$ gh api users/LandoDua` + stats (repos, seguidores, ubicación) y `$ git log --oneline -6` con actividad reciente vía API real, cursor `_` animate-pulse, link al perfil; fallback estático si la API falla
+- [x] **`lib/github.ts`** — fetch cacheado con `"use cache"` + `cacheTag("github")` + `cacheLife("hours")` (rate limit 60/h sin token); filtra tipos de eventos interesantes (push/create/…) y mapea a 6 máximo
+- [x] Contacto `mailto:` con punto de inyección Formspree comentado (misma fórmula que `/foto`), inputs con glow cyan en `:focus`, botón Enviar + link GitHub
+- [x] Entradas animadas con Framer Motion (`Reveal` + `useReducedMotion`, `whileInView` once, stagger 0.08 en el grid)
+- [x] Aislamiento de estilos respetado: zero clases oscuras/neón fuera de `(dev)`
+- [x] Metadata real: "Desarrollo — Orlando Duarte | Full-Stack"
+- [x] **Insignias con logos de tecnología:** 11 SVGs inline de simple-icons v15 (react, typescript, javascript, nextdotjs, vite, tailwindcss, framer, fastapi, sanity, vercel, pwa) + 3 Lucide de respaldo para stacks sin icono simple-icons (Tone.js → AudioWaveform, Zustand → Boxes, Recharts → TrendingUp)
+
+**Verificación Fase 3:**
+- `npx tsc --noEmit` ✅ · `npm run lint` ✅ · `npm run build` ✅ (`/dev` estática, revalidate 15m, expire 1d)
+- Desktop 1440×900 y mobile 390×844: hero + cards + terminal + contacto visibles tras scroll (whileInView), 4 cards con insignias e imágenes cargadas, 0 errores de consola, terminal muestra stats/eventos reales del API (no fallback)
+- Gotchas: Lucide v1.52 **no tiene** íconos de marca (Github MISSING) → `github-icon.tsx` propio; iconos de marca de tech vía simple-icons paths (CC0) con `fill="currentColor"`
+- Flora 26: repo `flor-amarilla-2026`; nombres reales en web: "Tone Breath" / "Skull King Scorer"
 
 ### Fase 4 — Pulido y despliegue
 - [ ] Responsive completo (landing apilada, grids, masonry)
