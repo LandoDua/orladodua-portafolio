@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Mail } from "lucide-react";
 import { EMAIL, GITHUB_URL } from "@/lib/site";
 import { GithubIcon } from "@/components/dev/github-icon";
+import { SectionNav } from "@/components/dev/section-nav";
 
 export const metadata: Metadata = {
   title: "Desarrollo — Orlando Duarte | Full-Stack",
@@ -22,7 +23,20 @@ export default async function DevLayout({
   const year = await getYear();
 
   return (
-    <div className="flex min-h-dvh flex-col bg-zinc-950 text-white">
+    <div className="relative flex min-h-dvh flex-col bg-zinc-950 text-white">
+      {/* Luces ambientales (misma paleta que el glow del panel dev de la
+          landing): cian abajo-izquierda, rojo arriba-derecha y halo suave
+          central. Fijo + pointer-events-none: acompaña todo el scroll sin
+          consumir interacción. */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 overflow-hidden"
+      >
+        <div className="absolute -left-32 top-1/4 h-[540px] w-[540px] rounded-full bg-cyan-500/[0.07] blur-[130px]" />
+        <div className="absolute -right-40 top-8 h-[480px] w-[480px] rounded-full bg-red-500/[0.06] blur-[130px]" />
+        <div className="absolute bottom-0 left-1/3 h-[420px] w-[640px] -translate-x-1/3 rounded-full bg-cyan-400/[0.05] blur-[140px]" />
+      </div>
+
       <header className="sticky top-0 z-50 border-b border-zinc-900/80 bg-zinc-950/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
           <Link
@@ -31,35 +45,13 @@ export default async function DevLayout({
           >
             Orlando Duarte
           </Link>
-          <nav
-            aria-label="Secciones"
-            className="flex items-center gap-5 text-sm text-zinc-500 sm:gap-7"
-          >
-            <a
-              href="#proyectos"
-              className="transition-colors hover:text-cyan-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400"
-            >
-              Proyectos
-            </a>
-            <a
-              href="#github"
-              className="transition-colors hover:text-cyan-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400"
-            >
-              GitHub
-            </a>
-            <a
-              href="#contacto"
-              className="transition-colors hover:text-cyan-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400"
-            >
-              Contacto
-            </a>
-          </nav>
+          <SectionNav />
         </div>
       </header>
 
-      <main className="flex-1">{children}</main>
+      <main className="relative flex-1">{children}</main>
 
-      <footer className="border-t border-zinc-900">
+      <footer className="relative border-t border-zinc-900">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-zinc-500 sm:flex-row">
           <p>© {year} Orlando Duarte</p>
           <div className="flex items-center gap-6">
