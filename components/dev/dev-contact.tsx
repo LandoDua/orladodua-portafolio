@@ -47,25 +47,23 @@ export function DevContact() {
               Escríbeme sobre tu proyecto, una idea o una vacante. Respondo
               personalmente, sin formularios ni intermediarios.
             </p>
-            <div className="mt-8 space-y-5 text-sm">
-              <div className="flex flex-wrap gap-4">
-                <a
-                  href={`mailto:${EMAIL}`}
-                  className="inline-flex items-center gap-2 border border-zinc-700 px-6 py-3 text-zinc-300 transition-all duration-300 hover:border-cyan-400/60 hover:text-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400"
-                >
-                  <Mail aria-hidden className="h-4 w-4" />
-                  {EMAIL}
-                </a>
-                <a
-                  href={GITHUB_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 border border-zinc-700 px-6 py-3 text-zinc-300 transition-all duration-300 hover:border-cyan-400/60 hover:text-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400"
-                >
-                  <GithubIcon className="h-4 w-4" />
-                  github.com/LandoDua
-                </a>
-              </div>
+            <div className="mt-8 flex flex-wrap items-center gap-4 text-sm">
+              <a
+                href={`mailto:${EMAIL}`}
+                className="inline-flex items-center gap-2 border border-zinc-700 px-6 py-3 text-zinc-300 transition-colors hover:border-cyan-400/60 hover:text-cyan-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400"
+              >
+                <Mail aria-hidden className="h-4 w-4" />
+                {EMAIL}
+              </a>
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border border-zinc-700 px-6 py-3 text-zinc-400 transition-colors hover:border-zinc-500 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-zinc-400"
+              >
+                <GithubIcon className="h-4 w-4" />
+                GitHub
+              </a>
             </div>
           </Reveal>
 

@@ -17,7 +17,7 @@ export function ProjectCard({ project }: { project: Project }) {
 
   return (
     <article
-      className={`group flex flex-col overflow-hidden border transition-all duration-300 ${
+      className={`group flex h-full flex-col overflow-hidden border transition-all duration-300 ${
         isPhoto
           ? "border-stone-200 bg-stone-50 hover:border-stone-400 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] focus-within:border-stone-400"
           : "border-zinc-800 bg-zinc-900/40 hover:border-cyan-400/60 hover:shadow-[0_0_28px_rgba(34,211,238,0.12)] focus-within:border-cyan-400/60"
