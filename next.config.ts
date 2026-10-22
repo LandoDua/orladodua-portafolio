@@ -4,6 +4,10 @@ const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  // Nudges coding agents toward security upgrades (16.4.0 → 16.4.2 advisory).
+  experimental: {
+    agentUpgrade: "security",
+  },
   // Permite abrir el dev server desde cualquier origen local: sin esto Next
   // bloquea el HMR (websocket) cross-origin y la hidratación no llega a
   // completarse (la landing se quedaría sin animaciones). La IP de red la
