@@ -12,11 +12,14 @@ export default async function DevPage() {
 
   return (
     <>
-      {/* Hero — entrada con CSS puro (visible sin JS) */}
+      {/* Hero — entrada con CSS puro (visible sin JS).
+          El overlay se enmascara al llegar a la base: sin el fade, el
+          gradiente aún tiene alpha y overflow-hidden lo cortaba en seco →
+          línea horizontal entre hero y proyectos. */}
       <section className="relative overflow-hidden">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(65%_55%_at_15%_85%,rgba(34,211,238,0.13),transparent_70%),radial-gradient(45%_45%_at_85%_10%,rgba(239,68,68,0.11),transparent_70%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(65%_55%_at_15%_85%,rgba(34,211,238,0.13),transparent_70%),radial-gradient(45%_45%_at_85%_10%,rgba(239,68,68,0.11),transparent_70%)] [-webkit-mask-image:linear-gradient(to_bottom,black_85%,transparent)] [mask-image:linear-gradient(to_bottom,black_85%,transparent)]"
         />
         <div className="mx-auto max-w-6xl px-6 pb-16 pt-16 md:pb-24 md:pt-24">
           <div className="max-w-2xl">
@@ -57,7 +60,7 @@ export default async function DevPage() {
       </section>
 
       {/* Proyectos */}
-      <section id="proyectos" className="scroll-mt-20 border-t border-zinc-900">
+      <section id="proyectos" className="scroll-mt-20">
         <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
           <Reveal>
             <p className="text-xs uppercase tracking-[0.3em] text-cyan-400">
@@ -92,9 +95,9 @@ export default async function DevPage() {
                 en público
               </h2>
               <p className="mt-5 leading-relaxed text-zinc-400">
-                Estudiante de Ingeniería en Sistemas Computacionales en
-                Durango. Todo lo que construyo vive en GitHub: repos activos,
-                ramas en desarrollo y despliegues automáticos.
+                Ingeniero en Sistemas Computacionales en Durango, antes de la
+                era vibecoding. Todo lo que construyo vive en GitHub: repos
+                activos, ramas en desarrollo y despliegues automáticos.
               </p>
               <Link
                 href="#contacto"
