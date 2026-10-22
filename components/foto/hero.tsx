@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, MapPin } from "lucide-react";
 import { urlFor } from "@/lib/sanity.image";
 import type { GalleryPhoto } from "@/lib/gallery";
 
@@ -27,6 +27,10 @@ export function Hero({ photo }: HeroProps) {
             Retratos, eventos y comida. Trabajo con luz natural y composición
             limpia para que cada imagen se sienta tan real como el momento que
             la vivió.
+          </p>
+          <p className="mt-4 flex items-center gap-2 text-sm text-stone-500">
+            <MapPin className="h-4 w-4 shrink-0" aria-hidden />
+            Sesiones con cita en Canatlán y Durango.
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-5">
             <a

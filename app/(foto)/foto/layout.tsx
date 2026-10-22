@@ -3,11 +3,12 @@ import Link from "next/link";
 import { Mail } from "lucide-react";
 import { EMAIL, INSTAGRAM_URL } from "@/lib/site";
 import { InstagramIcon } from "@/components/foto/instagram-icon";
+import { SectionNav } from "@/components/foto/section-nav";
 
 export const metadata: Metadata = {
   title: "Fotografía — Orlando Duarte",
   description:
-    "Portafolio fotográfico de Orlando Duarte: retratos de estudio y exterior, eventos, comida y productos. Ver galería, paquetes y contacto.",
+    "Portafolio fotográfico de Orlando Duarte: retratos de estudio y exterior, eventos, comida y productos. Sesiones en Canatlán y Durango. Ver galería, paquetes y contacto.",
 };
 
 /** Año cacheado: `new Date()` en render es inestable para el prerender de Next. */
@@ -34,29 +35,7 @@ export default async function FotoLayout({
           >
             Orlando Duarte
           </Link>
-          <nav
-            aria-label="Secciones"
-            className="flex items-center gap-4 text-sm text-stone-600 sm:gap-6"
-          >
-            <a
-              href="#galeria"
-              className="transition-colors hover:text-stone-900"
-            >
-              Galería
-            </a>
-            <a
-              href="#paquetes"
-              className="transition-colors hover:text-stone-900"
-            >
-              Paquetes
-            </a>
-            <a
-              href="#contacto"
-              className="transition-colors hover:text-stone-900"
-            >
-              Contacto
-            </a>
-          </nav>
+          <SectionNav />
         </div>
       </header>
 

@@ -62,7 +62,7 @@ export function Contact() {
               Cuéntame qué quieres recordar. Respondo personalmente con
               disponibilidad y una cotización para tu sesión o evento.
             </p>
-            <div className="mt-8 space-y-3 text-sm">
+            <div className="mt-8 space-y-5 text-sm">
               <a
                 href={`mailto:${EMAIL}`}
                 className="flex items-center gap-3 text-stone-700 transition-colors hover:text-stone-900"
@@ -74,7 +74,7 @@ export function Contact() {
                 href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 text-stone-700 transition-colors hover:text-stone-900"
+                className="inline-flex items-center gap-2 border border-stone-900 px-7 py-3 text-sm text-stone-900 transition-colors hover:bg-stone-900 hover:text-white"
               >
                 <InstagramIcon className="h-4 w-4" />
                 @orlandodua.fotografo

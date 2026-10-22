@@ -2,14 +2,11 @@ import { Check } from "lucide-react";
 import { Reveal } from "./reveal";
 import { EMAIL } from "@/lib/site";
 
-/**
- * ⚠️ CONTENIDO DE EJEMPLO: nombres, precios y beneficios son propuestas para
- * revisar y editar (Orlando, 2026-10-08). Sustituir por los datos reales.
- */
+/** Precios y copy fijados por Orlando (2026-10-22). */
 const PACKAGES = [
   {
     name: "Esencial",
-    price: "$1,000",
+    price: "$800",
     unit: "MXN · sesión",
     featured: false,
     features: [
@@ -18,10 +15,11 @@ const PACKAGES = [
       "1 locación",
       "Entrega digital en 7 días",
     ],
+    recommendation: "Retratos individuales o un perfil profesional.",
   },
   {
     name: "Profesional",
-    price: "$2,500",
+    price: "$2,200",
     unit: "MXN · sesión",
     featured: true,
     features: [
@@ -31,18 +29,22 @@ const PACKAGES = [
       "Entrega digital en 5 días",
       "Uso personal y redes sociales",
     ],
+    recommendation:
+      "Sesiones de pareja o familia, proyectos editoriales y de marca.",
   },
   {
     name: "Eventos",
-    price: "desde $3,000",
+    price: "desde $2,800",
     unit: "MXN · cobertura",
     featured: false,
     features: [
       "Hasta 4 horas de cobertura",
-      "150+ fotos editadas",
+      "100+ fotos editadas",
       "Galería privada en línea",
       "Entrega en 10 días",
     ],
+    recommendation:
+      "Celebraciones sociales: bautizos, cumpleaños y graduaciones.",
   },
 ];
 
@@ -63,6 +65,10 @@ export function Packages() {
           <p className="mt-5 leading-relaxed text-stone-600">
             Tres puntos de partida para cotizar. Cada sesión se adapta a lo que
             necesites: escríbeme y armamos algo a tu medida.
+          </p>
+          <p className="mt-4 leading-relaxed text-stone-600">
+            Si nunca te han tomado fotos, tranquilo: te acompaño pose por pose y
+            lo hacemos a tu ritmo.
           </p>
         </Reveal>
 
@@ -99,6 +105,14 @@ export function Packages() {
                     </li>
                   ))}
                 </ul>
+                <div className="mt-6 border-t border-stone-200 pt-5">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-stone-400">
+                    Ideal para
+                  </p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-stone-600">
+                    {pkg.recommendation}
+                  </p>
+                </div>
                 <a
                   href={`mailto:${EMAIL}?subject=${encodeURIComponent(
                     `Cotización — Paquete ${pkg.name}`,

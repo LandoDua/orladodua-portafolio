@@ -121,9 +121,12 @@ Portafolio web híbrido bajo un mismo dominio con dos mini-sitios:
 - [x] Hover de imagen: solo `scale-[1.03]` (500 ms) — **sin B/N**, fotos a todo color (intención *color splash* decidida por Orlando)
 - [x] Caption en hover: **nombre de categoría** (no el nombre de archivo, decisión de Orlando)
 - [x] **Lightbox:** clic en foto → imagen grande con `createPortal` a `body`; el shell de la página (`#foto-shell`) se desenfoca (`blur(10px)`) y pasa a escala de grises (`grayscale(1)`) vía JS; navegación ←/→, cierre con Esc o clic en el fondo, contador `n / total`, scroll bloqueado, `role="dialog"`
-- [x] 3 Paquetes de servicios (tarjetas 100% CSS, sin imágenes) ⚠️ **contenido de ejemplo a revisar por Orlando** (nombres/precios/beneficios en `components/foto/packages.tsx`)
+- [x] 3 Paquetes de servicios (tarjetas 100% CSS, sin imágenes) — contenido fijado por Orlando (2026-10-22): precios **$800 / $2,200 / desde $2,800**, Eventos **100+ fotos**, cápsula **"Ideal para…"** por paquete, y copy de posar en la intro
 - [x] Contacto `mailto:` estilo revista (inputs solo con borde inferior) → `orlando.dua2@gmail.com`; punto de inyección Formspree comentado en `handleSubmit`; redes: solo Instagram (`orlandodua.fotografo`, sin Behance por decisión)
 - [x] Entradas animadas con Framer Motion (`Reveal` + `useReducedMotion`, `whileInView` once)
+- [x] **Correcciones de contenido (2026-10-22):** ubicación *"Sesiones con cita en Canatlán y Durango"* en el hero (+ "Durango" en la metadata de `/foto` para SEO local) y diferencial *"te acompaño pose por pose"* en la intro de Paquetes
+- [x] **Instagram accesible (2026-10-22):** icono en el header sticky (visible en todo el scroll) y link elevado a botón outlined en Contacto; footer intacto
+- [x] **Scroll-spy en el header (2026-10-22):** `SectionNav` (cliente) resalta con underline fino la sección visible (Galería/Paquetes/Contacto) vía IntersectionObserver; sin activo en el hero, Instagram fuera del spy
 
 **Verificación Fase 2:**
 - `npx tsc --noEmit` ✅ · `npm run lint` ✅ · `npm run build` ✅ (`/foto` estático, revalidate 15m)
