@@ -43,7 +43,7 @@ export default async function DevPage() {
             <div className="panel-in panel-in-delay mt-9 flex flex-wrap items-center gap-5">
               <a
                 href="#proyectos"
-                className="inline-flex items-center gap-2 bg-cyan-400 px-7 py-3 text-sm font-medium text-zinc-950 transition-colors hover:bg-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400"
+                className="inline-flex items-center gap-2 border border-cyan-400/60 bg-zinc-900/60 px-7 py-3 text-sm text-cyan-400 transition-all duration-300 hover:border-cyan-400 hover:shadow-[0_0_18px_rgba(34,211,238,0.5)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400"
               >
                 Ver proyectos
                 <ChevronDown aria-hidden className="h-4 w-4" />
