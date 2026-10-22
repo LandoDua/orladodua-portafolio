@@ -127,9 +127,31 @@ Portafolio web híbrido bajo un mismo dominio con dos mini-sitios:
 
 **Verificación Fase 2:**
 - `npx tsc --noEmit` ✅ · `npm run lint` ✅ · `npm run build` ✅ (`/foto` estático, revalidate 15m)
-- HTML de producción:200, **159 `<img>`** (158 galería + 1 hero), **0 clases `grayscale`** en la galería (color pleno), **158 botones "Ampliar foto"**, las 3 secciones (`#galeria`, `#paquetes`, `#contacto`) con `scroll-mt-20` bajo el header sticky, preload del hero (`priority`), `next/image` optimizer → 200 (hero:116 KB)
-- Studio local (`npm run sanity:dev`, :3333) muestra las158 fotos +4 categorías. En manage.sanity.io **no hay visor de contenido** (solo conteos); CORS `localhost:3333` ya registrado
+- HTML de producción: 200, **159 `<img>`** (158 galería + 1 hero), **0 clases `grayscale`** en la galería (color pleno), **158 botones "Ampliar foto"**, las 3 secciones (`#galeria`, `#paquetes`, `#contacto`) con `scroll-mt-20` bajo el header sticky, preload del hero (`priority`), `next/image` optimizer → 200 (hero: 116 KB)
+- Studio local (`npm run sanity:dev`, :3333) muestra las 158 fotos + 4 categorías. En manage.sanity.io **no hay visor de contenido** (solo conteos); CORS `localhost:3333` ya registrado
 - Gotchas encontrados: `sanity dev` exige `styled-components` como dependencia directa del proyecto; `LayoutProps<"/foto">` requiere build previo para generar tipos de ruta; `new Date()` en render rompe el prerender (resuelto con `"use cache"` en `getYear()`); iconos de marca eliminados de lucide v1 → Instagram SVG propio (`instagram-icon.tsx`)
+
+### Fase 2b — Administración de fotos a largo plazo
+
+> **Estado: ✅ COMPLETADA (2026-10-21)** — Studio hosteado + revalidate a demanda.
+
+Contexto: la primera tirada (159 docs) se subió por script; a futuro se agregarán fotos en lote **y** de a una. El dashboard de manage.sanity.io no muestra contenido — para eso está el Studio.
+
+- [x] **`sourceKey` opcional** en el schema `photo` (las fotos creadas a mano en Studio no necesitan ruta local). `lib/gallery.ts` tipa `sourceKey: string | null` y `order: number | null`.
+- [x] Schema redesplegado (`npm run sanity:schema:deploy`).
+- [x] **Studio hosteado:** `npm run sanity:studio:deploy` → URL permanente (nombre del workspace: `orlando-site`). Editar exige sesión de miembro del proyecto. Studio local sigue disponible con `npm run sanity:dev`.
+- [x] **Orden estable:** `PHOTOS_QUERY` con `order(order asc, _createdAt desc)` — fotos manuales sin `order` no saltan arriba de forma rara.
+- [x] **Caché a demanda:** `cacheTag("gallery")` en `getGalleryData` + ruta `app/api/revalidate/route.ts` (GET/POST) protegida por `REVALIDATE_SECRET` (en `.env.local`; debe añadirse también en Vercel). Tras subir fotos: llamar `/api/revalidate?secret=…` y la galería se refresca al instante.
+- [ ] Añadir `REVALIDATE_SECRET` a Vercel (producción y preview) cuando se publique este cambio en `main`.
+- [ ] Futuro opcional: webhook de Sanity → `/api/revalidate` (automático, sin curl manual).
+
+**Flujo de administración resultante:**
+
+| Flujo | Cómo |
+|-------|------|
+| Lote (como hasta ahora) | Dejar archivos en `fotografias/<carpeta>/` → `npm run upload:photos` → llamar `/api/revalidate?secret=…` |
+| Puntual (nuevo) | Abrir Studio hosteado → doc "Foto" → subir imagen, categoría, `alt` (obligatorio), `order` opcional → revalidate |
+| Categoría nueva | Crear en Studio (o añadir carpeta al array `FOLDERS` del script si se quiere subida por lote) |
 
 ### Fase 3 — Lado Developer (`/dev`)
 - [ ] `layout.tsx` oscuro (bg-zinc-950, acentos cyan/rojo, glow)

@@ -47,6 +47,11 @@ opencode.json
 
 # sanity
 .sanity/
+/dist/
+
+# skills de agentes (instalación local, no del sitio)
+/.agents/
+/skills-lock.json
 
 # editor
 .idea/

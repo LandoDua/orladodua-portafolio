@@ -8,7 +8,7 @@ export const CATEGORIES_QUERY = defineQuery(`*[_type == "category"] | order(titl
 }`);
 
 /** Fotos de la galería con datos de imagen para <Image /> + LQIP. */
-export const PHOTOS_QUERY = defineQuery(`*[_type == "photo"] | order(order asc) {
+export const PHOTOS_QUERY = defineQuery(`*[_type == "photo"] | order(order asc, _createdAt desc) {
   _id,
   title,
   alt,

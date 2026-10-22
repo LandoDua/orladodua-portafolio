@@ -47,8 +47,7 @@ export const photo = defineType({
       title: "Clave de origen",
       type: "string",
       description:
-        "Ruta relativa del archivo local. La usa el script de subida para no duplicar fotos.",
-      validation: (rule) => rule.required(),
+        "Ruta relativa del archivo local. Solo la usa el script de subida (upload:photos) para no duplicar fotos. No es obligatoria si la foto se creó a mano en el Studio.",
     }),
   ],
   orderings: [

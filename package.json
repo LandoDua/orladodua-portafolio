@@ -9,6 +9,7 @@
     "lint": "eslint",
     "sanity:dev": "sanity dev",
     "sanity:schema:deploy": "sanity schemas deploy",
+    "sanity:studio:deploy": "sanity deploy",
     "upload:photos": "node --env-file=.env.local sanity/scripts/upload-photos.mjs"
   },
   "dependencies": {
