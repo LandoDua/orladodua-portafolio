@@ -34,7 +34,8 @@ Portafolio web híbrido bajo un mismo dominio con dos mini-sitios:
 10. **Identidad visible: "Orlando Duarte".** En la landing aparece como nombre negativo centrado sobre la costura (`mix-blend-mode: difference`, texto blanco → sale blanco sobre el lado oscuro y negro sobre el lado claro; al crecer un panel las letras se invierten al pasar la unión). Tipografía Geist en mayúsculas espaciadas. En desktop el contenido de cada panel se separa en diagonal (dev ↑, foto ↓) para dejarle el centro al nombre; en móvil el nombre queda sobre la unión apilada. Metadata actualizada con el nombre completo. El handle `orladodua` queda para dominio/GitHub.
 11. **Token de escritura Sanity = token del MCP.** El PAT que usa el MCP remoto (`opencode.json`, gitignored) se copia a `SANITY_API_WRITE_TOKEN` en `.env.local` (también gitignored). No se genera token adicional salvo que falle el permiso de escritura.
 12. **Git desde Fase 2:** repo inicializado en Fase 2 con `fotografias/` (393 MB de originales) en `.gitignore`; solo se versiona código y configuración.
-13. **Flujo de ramas y despliegue (2026-10-11):** `main` = producción, `develop` = desarrollo. Repo GitHub privado `LandoDua/orladodua-portafolio`, proyecto Vercel `orladodua-portafolio` (Hobby). Push a `main` → deploy automático a producción. Env vars de Sanity públicas ya configuradas en Vercel.
+13. **Flujo de ramas y despliegue (2026-10-11):** `main` = producción, `develop` = desarrollo. Repo GitHub `LandoDua/orladodua-portafolio`, proyecto Vercel `orladodua-portafolio` (Hobby). Push a `main` → deploy automático a producción. Env vars de Sanity públicas ya configuradas en Vercel.
+13b. **Apertura del repo (2026-10-22):** auditoría previa limpia (sin `.env*`, tokens, `opencode.json` ni `fotografias/` trackeados; historial sin secretos). `LICENSE` MIT añadido; repo pasado de **privado a público** vía `gh`. `projectId` de Sanity y email ya eran públicos por diseño (el sitio los muestra).
 14. **Pantalla `/dev` coming soon (2026-10-11):** ruta `(dev)/dev/page.tsx` con estética oscura, glow cyan/rojo, enlaces a GitHub/email y botón de vuelta al inicio. No cuenta como inicio de Fase 3.
 
 ## 3. Reglas inquebrantables
@@ -173,6 +174,7 @@ Contexto: la primera tirada (159 docs) se subió por script; a futuro se agregar
 - [x] Aislamiento de estilos respetado: zero clases oscuras/neón fuera de `(dev)`
 - [x] Metadata real: "Desarrollo — Orlando Duarte | Full-Stack"
 - [x] **Insignias con logos de tecnología:** 11 SVGs inline de simple-icons v15 (react, typescript, javascript, nextdotjs, vite, tailwindcss, framer, fastapi, sanity, vercel, pwa) + 3 Lucide de respaldo para stacks sin icono simple-icons (Tone.js → AudioWaveform, Zustand → Boxes, Recharts → TrendingUp)
+- [x] **Tarjeta Portafolio Fotográfico con estética `/foto` (2026-10-22):** `Project.theme?: "photo"`; `ProjectCard` rama clara (`bg-stone-50`, borde stone, título Instrument Serif italic, sin cyan); `TechBadge` variante `mono` (círculo blanco + icono stone-900). Las otras 3 tarjetas intactas (variante `neon`).
 
 **Verificación Fase 3:**
 - `npx tsc --noEmit` ✅ · `npm run lint` ✅ · `npm run build` ✅ (`/dev` estática, revalidate 15m, expire 1d)
@@ -185,7 +187,8 @@ Contexto: la primera tirada (159 docs) se subió por script; a futuro se agregar
 - [ ] `prefers-reduced-motion`
 - [ ] Metadatos SEO por ruta + favicon
 - [ ] Verificación: `npm run lint` + `npm run build`
-- [x] Conexión a Vercel (Hobby) + env vars — **2026-10-11**: repo GitHub privado, proyecto Vercel linkeado, env vars configuradas, primer deploy de producción exitoso.
+- [x] Conexión a Vercel (Hobby) + env vars — **2026-10-11**: proyecto Vercel linkeado, env vars configuradas, primer deploy de producción exitoso.
+- [x] **Repo público + LICENSE MIT** — **2026-10-22**: auditoría de secretos limpia (árbol + historial), LICENSE MIT, `gh repo edit --visibility public`. Enlace "Código" de la tarjeta del portafolio ya es funcional.
 - [ ] Migración futura del contacto a Formspree
 
 ## 6. Skills de agentes instaladas

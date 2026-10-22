@@ -101,7 +101,7 @@ Ambos deben pasar sin errores. También verifica responsive en móvil (la landin
 - **Para lanzar:** merge de `develop` → `main` + push.
 - **Env vars en Vercel** (ya configuradas): `NEXT_PUBLIC_SANITY_PROJECT_ID=8670kl0n`, `NEXT_PUBLIC_SANITY_DATASET=production` (producción y preview). El `SANITY_API_WRITE_TOKEN` **nunca** se sube a Vercel (solo sirve para subir fotos desde local).
 - **CLI de Vercel:** usar `npx vercel` (no hay instalación global). El proyecto está linkeado vía `.vercel/` (gitignored).
-- **Repo GitHub:** `LandoDua/orladodua-portafolio` (privado).
+- **Repo GitHub:** `LandoDua/orladodua-portafolio` (**público** desde 2026-10-22, LICENSE MIT; auditoría de secretos limpia — `.env*`, `opencode.json` y `fotografias/` quedan fuera de git).
 
 ## 10. Convenciones
 
