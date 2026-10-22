@@ -19,11 +19,22 @@ import { TECH_ICONS } from "./tech-icons";
  * - Táctil: tap alterna el tooltip (`lastPointerType` desde `pointerdown`);
  *   se cierra al tocar fuera (`onBlur`).
  * - Teclado: `focus` abre solo si coincide con `:focus-visible`; Escape cierra.
+ *
+ * Variantes:
+ * - `"neon"` (default): cyan del sitio; hover = color de marca.
+ * - `"mono"`: círculo blanco con icono negro (tarjeta foto); sin color de marca.
  */
-export function TechBadge({ tech }: { tech: TechId }) {
+export function TechBadge({
+  tech,
+  variant = "neon",
+}: {
+  tech: TechId;
+  variant?: "neon" | "mono";
+}) {
   const [open, setOpen] = useState(false);
   const lastPointerType = useRef<string | null>(null);
   const { label, color, Icon } = TECH_ICONS[tech];
+  const isMono = variant === "mono";
 
   return (
     <button
@@ -57,19 +68,31 @@ export function TechBadge({ tech }: { tech: TechId }) {
       onKeyDown={(event) => {
         if (event.key === "Escape") setOpen(false);
       }}
-      className="relative flex h-9 w-9 items-center justify-center rounded-full border bg-zinc-950/75 backdrop-blur-sm transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+      className={`relative flex h-9 w-9 items-center justify-center rounded-full border transition-all duration-300 ${
+        isMono
+          ? "bg-white shadow-[0_2px_10px_rgba(0,0,0,0.25)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900"
+          : "bg-zinc-950/75 backdrop-blur-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+      }`}
       style={
-        open
+        isMono
           ? {
-              color,
-              borderColor: color,
-              boxShadow: `0 0 12px ${color}`,
+              color: "#1c1917",
+              borderColor: open ? "rgba(28,25,23,0.25)" : "rgba(28,25,23,0.1)",
+              boxShadow: open
+                ? "0 4px 14px rgba(0,0,0,0.35)"
+                : "0 2px 10px rgba(0,0,0,0.25)",
             }
-          : {
-              color: "#22d3ee",
-              borderColor: "rgba(34,211,238,0.3)",
-              boxShadow: "0 0 8px rgba(34,211,238,0.35)",
-            }
+          : open
+            ? {
+                color,
+                borderColor: color,
+                boxShadow: `0 0 12px ${color}`,
+              }
+            : {
+                color: "#22d3ee",
+                borderColor: "rgba(34,211,238,0.3)",
+                boxShadow: "0 0 8px rgba(34,211,238,0.35)",
+              }
       }
     >
       <Icon className="h-4 w-4" strokeWidth={1.75} aria-hidden />

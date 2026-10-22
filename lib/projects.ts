@@ -24,6 +24,11 @@ export interface Project {
   image: { src: string; alt: string };
   /** 5–6 insignias destacadas; el stack completo se describe en el texto. */
   techs: TechId[];
+  /**
+   * Estilo de la tarjeta. `"photo"` aplica la estética del lado `/foto`
+   * (fondo claro, tipografía serif, insignias B/N) — solo el portafolio.
+   */
+  theme?: "photo";
 }
 
 /**
@@ -82,5 +87,6 @@ export const PROJECTS: Project[] = [
       alt: "Hero del portafolio fotográfico con retrato de Orlando Duarte",
     },
     techs: ["nextjs", "typescript", "tailwind", "sanity", "framer", "vercel"],
+    theme: "photo",
   },
 ];
